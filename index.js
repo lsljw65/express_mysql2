@@ -12,3 +12,6 @@ app.get("/", ()=>{
     console.log("기본주소 요청");
 })
 
+app.get("/hello", ()=>{
+    console.log("hello 주소 요청");
+})
