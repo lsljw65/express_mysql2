@@ -2,3 +2,15 @@ get http://localhost:8000/
 
 ###
 get http://localhost:8000/hello
+
+###
+get http://localhost:8000/qs?p1=aa&p2=bb
+
+###
+post http://localhost:8000/post-req
+Content-Type: application/json; charset=UTF-8
+
+{
+    "name":"이름",
+    "age":11
+}
