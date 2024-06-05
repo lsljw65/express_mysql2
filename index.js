@@ -43,3 +43,64 @@ app.post("/post-req",(req)=>{
     const {name,age}=req.body;
     console.log(`name:${name}, age:${age}`)
 })
+
+// 핵심 삽입
+app.post("/save",(req)=>{
+    const {name, capital, population }=req.body
+    console.log(`name:${name}, capital:${capital}, population:${population}`);
+    const sql="insert into db_sample.nations_table(name,capital,population) value(?,?,?)"
+    db.query(sql,[name,capital,population],(err,results,fields)=>{
+        console.log("err",err);
+        console.log("results",results);
+        console.log("fields",fields);
+    })
+})
+
+//조회
+app.get("/list",(req,res)=>{
+    const sql="select * from db_sample.nations_table"
+    db.query(sql,(err,results,fields)=>{
+        console.log("err",err);
+        console.log("results",results);
+        // console.log("fields",fields)
+        res.json(results)
+    })
+})
+
+app.get("/:id",(req,res)=>{
+    console.log(req.params.id);
+    const id=req.params.id;
+    const sql="select * from db_sample.nations_table where id=?"
+    db.query(sql,[id],(err,results,fields)=>{
+        console.log("err",err)
+        console.log("results",results);
+        if(results.length==0){
+            // 조회없음
+            res.status(404).send("조회된 결과 없음")
+        } else{
+            // 조회됨
+            res.status(200).json(results)
+        }
+    })
+})
+
+app.put("/:id",(req,res)=>{
+    const {id,name,capital,population}=req.body;  
+    console.log(`id:${id}, name:${name}, capital:${capital}, population:${population}`);
+    const sql="update db_sample.nations_table set population=? where id=?"
+    db.query(sql,[population,id],(err,results,fields)=>{
+        console.log("err",err)
+        console.log("results",results);
+    })
+})
+
+app.delete("/:id",(req,res)=>{
+    const id=req.params.id;
+    const sql="delete from db_sample.nations_table where id=?"
+    db.query(sql,[id],(err,results)=>{
+        console.log("err",err)
+        console.log("results",results);
+    })
+})
+
+
